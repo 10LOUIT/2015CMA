@@ -43,13 +43,13 @@ myBarplot(previous_total, "Total revenue per customer and per segment", "Custome
 colSums(revenue_2014[2])
 
 # Merge 2013 customers and 2014 revenue (correct)
-forward = merge(customers_2013, revenue_2014, all.x = TRUE)
-forward$revenue_2014[is.na(forward$revenue_2014)] = 0
+forward = merge(customers_2014, revenue_2015, all.x = TRUE)
+forward$revenue_2015[is.na(forward$revenue_2015)] = 0
 
 # Prerequisite: Compute the revenue 2015 and the enhanced data object 
 # Merge 2014 customers and 2015 revenue (Enhanced)
 in_sample = merge(enhanced_customers_2014, revenue_2015, all.x = TRUE)
-in_sample$revenue_2014[is.na(in_sample$revenue_2015)] = 0
+in_sample$revenue_2015[is.na(in_sample$revenue_2015)] = 0
 in_sample$active_2015 = as.numeric(in_sample$revenue_2015 > 0)
 
 # Display calibration (in-sample) data
@@ -132,6 +132,8 @@ for (i in 2:11) {
 # Plot inactive, active high value customers over time
 barplot(segments[1, ], main = "inactive Customers")
 barplot(segments[2, ], main = "cold Customers")
+barplot(segments[6, ], main = "active high value")
+barplot(segments[7, ], main = "active low value")
 
 # Display how segments will evolve over time
 print(round(segments))

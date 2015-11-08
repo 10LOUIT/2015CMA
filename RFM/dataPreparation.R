@@ -104,12 +104,14 @@ revenue_2015 = sqldf("SELECT customer_id, SUM(purchase_amount) AS 'revenue_2015'
                      WHERE year_of_purchase = 2015
                      GROUP BY 1")
 summary(revenue_2015)
+colSums(revenue_2015[2])
 
 revenue_2014 = sqldf("SELECT customer_id, SUM(purchase_amount) AS 'revenue_2014'
                      FROM data
                      WHERE year_of_purchase = 2014
                      GROUP BY 1")
 summary(revenue_2014)
+colSums(revenue_2014[2])
 
 # --- DEVELOP A PREDICTIVE MODEL --- 
 

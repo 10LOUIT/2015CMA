@@ -52,14 +52,16 @@ customers_with_positive_transactions = sqldf("SELECT * FROM raw_data_6 WHERE pur
 colSums(customers_with_positive_transactions[2])
 
 customers_clean = sqldf("SELECT * FROM customers_with_positive_transactions INNER JOIN customers_with_negative_transactions ON customers_with_positive_transactions.customer_id = customers_with_negative_transactions.customer_id WHERE NOT -customers_with_negative_transactions.purchase_amount = customers_with_positive_transactions.purchase_amount")
-customers_clean = sqldf("SELECT * FROM customers_with_positive_transactions as T1 JOIN customers_with_negative_transactions as T2 ON NOT T1.customer_id = T2.customer_id AND NOT T1.purchase_amount = -T2.purchase_amount")
 
 # DELETE FROM `table1` WHERE `group` in (SELECT DISTINCT `group` FROM `table2`)
-customers_clean = sqldf("DELETE FROM customers_with_positive_transactions WHERE customer_id IN (SELECT customer_id FROM customers_with_negative_transactions WHERE customers_with_positive_transactions.purchase_amount = -customers_with_negative_transactions.purchase_amount)")
+#customers_clean = sqldf("DELETE FROM customers_with_positive_transactions WHERE customer_id IN (SELECT customer_id FROM customers_with_negative_transactions WHERE customers_with_positive_transactions.purchase_amount = -customers_with_negative_transactions.purchase_amount)")
 
-# Delete those transactions (not finish)
-customers_without_returns = sqldf("SELECT * FROM customers_with_positive_transactions INNER JOIN customers_with_negative_transactions ON customers_with_positive_transactions.customer_id = customers_with_negative_transactions.customer_id WHERE NOT -customers_with_negative_transactions.purchase_amount = customers_with_positive_transactions.purchase_amount")
-rm(customers_without_returns)
+# Subset a data frame based on another data frame
+customers_subset = customers_with_positive_transactions[customers_with_positive_transactions$purchase_amount %in% -customers_with_negative_transactions$purchase_amount, ]
+colSums(customers_subset[2])
+
+# Assign data with customer_subset
+data = customers_subset
 
 # ------------------------------------------------------------------------------------------------------------
 # Explore the processed data (Not finish)
